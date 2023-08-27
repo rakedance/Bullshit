@@ -1,14 +1,15 @@
 import { ChangeEvent, FocusEvent, FormEvent, FC, useState } from 'react';
 
-import { BasicFormProps, ErrorData, FormData } from './types';
-import { DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@mui/material';
+import { AuthFormProps, ErrorData, FormData } from './types';
+import { DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField, Box } from '@mui/material';
 import { useAppDispatch } from '../../redux/hooks/hooks';
 import { createAuthRequested } from '../../redux/actions/authActions';
 
-export const BasicForm: FC<BasicFormProps> = ({formTitle, formSubTitle, actions}) => {
+export const AuthForm: FC<AuthFormProps> = ({formTitle, formSubTitle, actions}) => {
   const [formData, setFormData] = useState<FormData>({ username: '', email: '', password: '' });
   const [errors, setErrors] = useState<ErrorData>({ username: '', email: '', password: '' });
   const dispatch = useAppDispatch();
+  
 
 
   const validateField = (name: string, value: string) => {
@@ -63,49 +64,55 @@ export const BasicForm: FC<BasicFormProps> = ({formTitle, formSubTitle, actions}
             {formSubTitle}
           </DialogContentText>
         </DialogContent>
-        <form onSubmit={handleSubmit} style={{width: '50%', margin: 'auto'}}>
+        <form onSubmit={handleSubmit}>
+          <Box sx={{marginX: 10}}>
+          <TextField
+          name="username"
+          label="Username"
+          value={formData.username}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          helperText={errors.username}
+          error={Boolean(errors.username)}
+          margin='dense'
+          fullWidth
+        />
         <TextField
-        name="username"
-        label="Username"
-        value={formData.username}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        helperText={errors.username}
-        error={Boolean(errors.username)}
-        sx={{display: 'block', marginY: '15px'}}
-      />
-      <TextField
-        name="email"
-        label="Email"
-        value={formData.email}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        helperText={errors.email}
-        error={Boolean(errors.email)}
-        sx={{display: 'block', marginY: '15px'}}
-      />
-      <TextField
-        name="password"
-        label="Password"
-        type="password"
-        value={formData.password}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        helperText={errors.password}
-        error={Boolean(errors.password)}
-        sx={{display: 'block', marginY: '15px'}}
-      />
-      <DialogActions sx={{justifyContent: 'center'}}>
-        {actions.map((button) => <Button 
-        key={button.name} 
-        name={button.name} 
-        onClick={button.onClick} 
-        type={button.type}
-        >
-          {button.name}
-        </Button>)}
-      </DialogActions>
-    </form>
+          name="email"
+          label="Email"
+          value={formData.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          helperText={errors.email}
+          error={Boolean(errors.email)}
+          margin='dense'
+          fullWidth
+        />
+        <TextField
+          name="password"
+          label="Password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          helperText={errors.password}
+          error={Boolean(errors.password)}
+          margin='dense'
+          fullWidth
+        />
+          </Box>
+        <DialogActions sx={{justifyContent: 'center'}}>
+          {actions.map((button) => 
+          <Button 
+            key={button.name} 
+            name={button.name} 
+            onClick={button.onClick} 
+            type={button.type}
+            >
+              {button.name}
+          </Button>)}
+        </DialogActions>
+      </form>
     </>
   );
 };

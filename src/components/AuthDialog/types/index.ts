@@ -1,4 +1,4 @@
-export interface BasicDialogProps {
+export interface AuthDialogProps {
     isOpen: boolean;
     children?: React.ReactNode;
     handleClose: () => void;

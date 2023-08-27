@@ -1,4 +1,4 @@
-export interface BasicFormProps {
+export interface AuthFormProps {
     formTitle: string;
     formSubTitle: string;
     actions: {

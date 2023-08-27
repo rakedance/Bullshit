@@ -1,5 +1,4 @@
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -8,8 +7,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import {MouseEvent, useEffect, useState} from 'react'
 import { createChangeModal } from '../../redux/actions/modalActions';
-import BasicForm from '../BasicForm';
-import BasicDialog from '../BasicDialog';
+import AuthForm from '../AuthForm';
+import AuthDialog from '../AuthDialog';
 import { Snackbar } from '@mui/material';
 
 export default function Header() {
@@ -28,14 +27,6 @@ export default function Header() {
     }
   }, [authError]);
 
-  const handleToastClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-
   const handleAuthButtonClick = ({target}: MouseEvent<HTMLButtonElement> & {target: {name: string}} ) => {
     dispatch(createChangeModal({isOpen: true, modalType: target.name}))
   }
@@ -43,7 +34,7 @@ export default function Header() {
     dispatch(createChangeModal({isOpen: false, modalType: ''}))
   }
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -66,22 +57,21 @@ export default function Header() {
             <Button name={`${authUser.username}`} color="inherit">{authUser.username}</Button>
             <Button name={'sign-out'} color="inherit">Sign Out</Button>
           </>}
-          <BasicDialog isOpen={isOpen} handleClose={handleClose}>
-            <BasicForm formTitle={modalType}
+          <AuthDialog isOpen={isOpen} handleClose={handleClose}>
+            <AuthForm formTitle={modalType}
             formSubTitle={`To ${modalType} fill out the form and press submit button`}
             actions={[
               {name: 'cancel', onClick: handleClose}, 
               {name: 'submit', type: 'submit'}]}>
-            </BasicForm>
-          </BasicDialog>
+            </AuthForm>
+          </AuthDialog>
         </Toolbar>
       </AppBar>
       {authError && <Snackbar
         open={snackbarOpen}
         autoHideDuration={5000}
-        onClose={handleToastClose}
         message={`${authError}`}
       />}
-    </Box>
+    </>
   );
 }
